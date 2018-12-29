@@ -1,8 +1,7 @@
-# chat-example
+# Firebase Web Codelab - Final code
 
-This is the source code for a very simple chat example used for
-the [Getting Started](http://socket.io/get-started/chat/) guide
-of the Socket.IO website.
+This folder contains the final code of the [Firebase Web Codelab](https://codelabs.developers.google.com/codelabs/firebase-web/).
 
-Please refer to it to learn how to run this application.
+You can use this app directly if you'd like to see the finished app but before you do follow the [Create a Firebase Project and Setup](https://codelabs.developers.google.com/codelabs/firebase-web/#3) step of the Codelab instructions
 
+If you'd like to follow the step by step codelab start with the [web-start](../web-start) directory.
