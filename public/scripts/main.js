@@ -11,11 +11,12 @@ function loadMessages() {
   // Loads the last 12 messages and listen for new ones.
   var callback = function (snap) {
     var data = snap.val();
-    displayMessage(snap.key, data.name, data.text, data.profilePicUrl, data.imageUrl);
+    displayMessage(snap.key, data.text);
   };
-
+  console.log("loadmessages")
   firebase.database().ref('/messages/1').limitToLast(12).on('child_added', callback);
   firebase.database().ref('/messages/').limitToLast(12).on('child_changed', callback);
+  console.log("loadmessages add messages")
 }
 
 // Saves a new message on the Firebase DB.
@@ -29,22 +30,6 @@ function saveMessage(messageText) {
 }
 
 
-// Saves the messaging device token to the datastore.
-function saveMessagingDeviceToken() {
-  firebase.messaging().getToken().then(function (currentToken) {
-    if (currentToken) {
-      console.log('Got FCM device token:', currentToken);
-      // Saving the Device Token to the datastore.
-      firebase.database().ref('/fcmTokens').child(currentToken)
-        .set(firebase.auth().currentUser.uid);
-    } else {
-      // Need to request permissions to show notifications.
-      requestNotificationsPermissions();
-    }
-  }).catch(function (error) {
-    console.error('Unable to get messaging token.', error);
-  });
-}
 
 // Requests permissions to show notifications.
 function requestNotificationsPermissions() {
@@ -80,10 +65,7 @@ function resetMaterialTextfield(element) {
 }
 
 // Template for messages.
-var MESSAGE_TEMPLATE =
-  '<div class="message-container">' +
-  '<div class="message"></div>' +
-  '</div>';
+var MESSAGE_TEMPLATE = '<div class="message-container">' + '<div class="message"></div>' + '</div>';
 
 
 
@@ -99,11 +81,9 @@ function displayMessage(key, text) {
     messageListElement.appendChild(div);
   }
   var messageElement = div.querySelector('.message');
-  if (text) { // If the message is text.
+ 
     messageElement.textContent = text;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  }
+ 
   // Show the card fading-in and scroll to view the new message.
   setTimeout(function () {
     div.classList.add('visible')
@@ -122,7 +102,17 @@ function toggleButton() {
   }
 }
 
+// Checks that the Firebase SDK has been correctly setup and configured.
+function checkSetup() {
+  if (!window.firebase || !(firebase.app instanceof Function) || !firebase.app().options) {
+    window.alert('You have not configured and imported the Firebase SDK. ' +
+        'Make sure you go through the codelab setup instructions and make ' +
+        'sure you are running the codelab using `firebase serve`');
+  }
+}
 
+// Checks that Firebase has been imported.
+checkSetup();
 
 
 // Saves message on form submit.
