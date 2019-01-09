@@ -11,6 +11,7 @@ function loadMessages() {
   // Loads the last 12 messages and listen for new ones.
   var callback = function (snap) {
     var data = snap.val();
+    console.log(snap.key, data.text);
     displayMessage(snap.key, data.text);
   };
   console.log("loadmessages")
